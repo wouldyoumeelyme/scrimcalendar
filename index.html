@@ -3,117 +3,166 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>calendar</title>
+<title>scrim calendar</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#FCF1F6; --cell:#FCF1F6; --gap:#FFFFFF; --out:#F6EEF1;
-  --ink:#2F2B2D; --sub:#7A7476; --faint:#9C9598; --on:#F3EBEE;
+  --ink:#1B1819; --pink:#F5A3C4; --pinkL:#FBD3E3; --pinkXL:#FFF0F6; --white:#FFFBFD;
+  --sub:rgba(27,24,25,.5); --faint:rgba(27,24,25,.18);
+  --px:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --head:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --script:"Great Vibes","Snell Roundhand","Apple Chancery",cursive;
+  --cond:"Archivo","Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI","Apple SD Gothic Neo",Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
-.w{position:relative;max-width:400px;margin:8px auto;background:var(--bg);border-radius:4px;padding:20px 14px 14px}
-.top{display:flex;align-items:center;justify-content:center;gap:10px}
-.top b{font-size:18px;font-weight:700;letter-spacing:-.01em}
-.arrow{background:none;border:none;color:#5f5a5c;font-size:17px;cursor:pointer;padding:0 6px;border-radius:4px;line-height:1.4}
-.bar{display:flex;justify-content:center;align-items:center;gap:22px;margin:10px 0 12px}
-.nav{display:flex;align-items:center;padding:3px 4px;gap:4px}
-.nav button{background:none;border:none;font-family:inherit;color:var(--ink);font-size:10.5px;padding:2px 8px;cursor:pointer}
-.nav .a{font-size:14px;line-height:1;color:#5f5a5c}
-.seg{display:flex;align-items:center;gap:2px}
-.seg button{background:none;border:none;font-family:inherit;color:#5f5a5c;font-size:10.5px;width:22px;height:22px;border-radius:3px;cursor:pointer}
-.seg button.on{background:var(--on);color:var(--ink);box-shadow:inset 0 1px 2px rgba(0,0,0,.12)}
-.seg button:active{box-shadow:inset 0 1px 3px rgba(0,0,0,.16)}
-.grid{display:grid;grid-template-columns:repeat(7,1fr);column-gap:1px;row-gap:1px;background:var(--gap)}
-.h{background:var(--bg);text-align:center;font-size:12px;font-weight:600;color:var(--ink);padding:2px 0 3px}
-.d{background:var(--cell);height:37px;display:flex;align-items:flex-start;justify-content:flex-end;padding:4px 6px 0 0;font-size:11.5px;color:var(--sub)}
-.d.o{background:var(--out)}
-.num{position:relative;z-index:0}
-.num.t:before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:20px;height:20px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.75);pointer-events:none}
+html,body{background:#fff;color:var(--ink);font-family:var(--px);-webkit-font-smoothing:antialiased}
 
-.list{background:var(--cell);border:1px solid var(--gap);padding:14px;font-size:12px;color:var(--sub);min-height:120px}
-.list p+p{margin-top:8px}
-.big{background:var(--cell);border:1px solid var(--gap);padding:18px;text-align:center}
-.big .n{font-size:40px;font-weight:700}
-.big .s{font-size:12px;color:var(--sub);margin-top:4px}
+.w{position:relative;max-width:420px;margin:10px auto 14px;border-radius:4px;overflow:hidden;padding:20px 16px 18px;
+  background:linear-gradient(180deg,#F9C6DA 0%,#FCE1EC 38%,var(--white) 78%);
+  box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.w:before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(rgba(255,255,255,.75) 32%,transparent 36%) 0 0/6px 6px;
+  -webkit-mask:linear-gradient(180deg,#000 0%,transparent 40%);mask:linear-gradient(180deg,#000 0%,transparent 40%)}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:6;opacity:.35;mix-blend-mode:multiply;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .95  0 0 0 0 .55  0 0 0 0 .7  0 0 0 .25 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* decorations */
+.ph{position:absolute;pointer-events:none}
+.big{width:76px;top:10px;right:18px;transform:rotate(8deg);filter:drop-shadow(0 0 6px rgba(245,163,196,.6))}
+.hstar{position:absolute;pointer-events:none;width:78px;top:30px;right:92px;transform:rotate(-8deg);z-index:1}
+.spk{width:16px;top:18px;right:110px}
+.s{position:absolute;line-height:1;pointer-events:none;font-family:"Apple Symbols","Segoe UI Symbol","DejaVu Sans",sans-serif}
+.s1{top:8px;right:104px;font-size:13px;color:var(--ink);transform:rotate(-12deg)}
+.s2{top:62px;right:10px;font-size:17px;color:var(--ink);transform:rotate(14deg)}
+.s3{top:58px;right:170px;font-size:11px;color:var(--pink)}
+.hs{position:absolute;width:70px;height:70px;bottom:-22px;right:-18px;transform:rotate(-8deg);pointer-events:none;z-index:1}
+.hs span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;line-height:1;font-family:"Apple Symbols","Segoe UI Symbol","DejaVu Sans",sans-serif}
+.halo{font-size:82px;color:transparent;background:radial-gradient(var(--pink) 40%,transparent 44%) 0 0/4px 4px;-webkit-background-clip:text;background-clip:text;
+  -webkit-mask:radial-gradient(circle at 50% 54%,#000 30%,transparent 66%);mask:radial-gradient(circle at 50% 54%,#000 30%,transparent 66%)}
+.core{font-size:46px;color:var(--pink)}
+
+/* header */
+.top{position:relative;z-index:2}
+.mon{display:inline-block;white-space:nowrap;font-family:var(--head);font-weight:700;font-size:44px;line-height:1;letter-spacing:-.03em;text-transform:uppercase;color:var(--ink);padding-left:4px}
+.mon i{font-family:var(--script);font-style:normal;font-weight:400;text-transform:none;font-size:1.5em;color:var(--ink);letter-spacing:0;margin-right:0;position:relative;top:8px;line-height:.5}
+.yrw{display:flex;align-items:center;margin-top:4px}
+.yr{font-family:var(--head);font-weight:600;font-size:13px;letter-spacing:.12em;padding:0 2px}
+.gap{width:22px}
+.arrow{background:none;border:none;color:var(--sub);font-family:var(--px);font-size:14px;cursor:pointer;padding:0 5px}
+.lab{display:inline-block;margin-top:8px;background:var(--ink);color:var(--pink);font-size:11px;padding:3px 8px;letter-spacing:.06em;font-family:"Apple Symbols","Segoe UI Symbol","DejaVu Sans",sans-serif}
+
+/* controls */
+.ctl{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}
+.nav{display:flex;align-items:center;gap:2px}
+.nav button{background:none;border:none;font-family:var(--head);font-weight:600;color:var(--ink);font-size:13px;letter-spacing:.12em;padding:2px 5px;cursor:pointer}
+.nav .a{color:#4F4549;font-weight:700;-webkit-text-stroke:.35px #4F4549}
+.seg{display:flex;gap:3px}
+.seg button{-webkit-appearance:none;appearance:none;border-radius:0;background:#FFF8FB;border:1px solid #000;font-family:var(--head);font-weight:600;font-size:12px;color:var(--ink);width:24px;height:22px;cursor:pointer}
+.seg button.on{background:#3B3638;color:var(--pink);box-shadow:inset 0 0 3px 1px rgba(0,0,0,.55),inset 0 3px 4px rgba(0,0,0,.55)}
+.seg button:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}
+
+/* panel */
+.panel{position:relative;z-index:2}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:#1B1819}
+.h{font-family:var(--head);font-weight:500;font-size:10.5px;text-align:center;padding:4px 0 3px;background:var(--ink);color:var(--pink);letter-spacing:.06em}
+.d{position:relative;height:38px;display:flex;justify-content:flex-end;align-items:flex-start;padding:4px 6px 0 0;font-size:13px;color:var(--ink);background:#FFF8FB}
+.d.o{color:var(--sub);background:radial-gradient(rgba(205,150,174,.34) 22%,transparent 26%) 0 0/4px 4px,#FFF8FB}
+.num{position:relative;z-index:0}
+.num.t{color:#fff;font-weight:600}
+.num.t:before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:28px;height:26px;transform:translate(-50%,-48%);
+  background:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2022%27%3E%3Cpath%20fill%3D%27%23F07AAA%27%20d%3D%27M12%2021.2%2010.6%2020C5.4%2015.4%202%2012.3%202%208.4%202%205.3%204.4%203%207.4%203c1.7%200%203.4.8%204.6%202.1C13.2%203.8%2014.9%203%2016.6%203%2019.6%203%2022%205.3%2022%208.4c0%203.9-3.4%207-8.6%2011.6L12%2021.2z%27/%3E%3C/svg%3E") center/contain no-repeat;opacity:.62;pointer-events:none}
+
+.list,.big2{padding:14px;min-height:118px;background:#FFF8FB;border-top:1px solid #1B1819;border-bottom:1px solid #1B1819}
+.list .dt{font-family:var(--head);font-weight:600;font-size:24px;letter-spacing:-.02em}
+.list .ln{margin:8px 0;height:.75px;background:var(--pink)}
+.list p{font-size:14px}
+.big2{text-align:center}
+.big2 .n{font-family:var(--head);font-weight:600;font-size:60px;line-height:1}
+.big2 .s0{font-family:var(--script);font-size:30px;color:#F07AAA;margin-top:2px}
 </style>
 </head>
 <body>
 <div class="w">
+  <svg class="ph big" viewBox="0 0 13 11" aria-hidden="true"><defs><linearGradient id="gH" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="11"><stop offset="0" stop-color="#F07AAA"/><stop offset="1" stop-color="#F8B3CE"/></linearGradient></defs><g fill="url(#gH)"><rect x="2" y="0" width="1.12" height="1.12"/><rect x="3" y="0" width="1.12" height="1.12"/><rect x="4" y="0" width="1.12" height="1.12"/><rect x="8" y="0" width="1.12" height="1.12"/><rect x="9" y="0" width="1.12" height="1.12"/><rect x="10" y="0" width="1.12" height="1.12"/><rect x="1" y="1" width="1.12" height="1.12"/><rect x="2" y="1" width="1.12" height="1.12"/><rect x="3" y="1" width="1.12" height="1.12"/><rect x="4" y="1" width="1.12" height="1.12"/><rect x="5" y="1" width="1.12" height="1.12"/><rect x="7" y="1" width="1.12" height="1.12"/><rect x="8" y="1" width="1.12" height="1.12"/><rect x="9" y="1" width="1.12" height="1.12"/><rect x="10" y="1" width="1.12" height="1.12"/><rect x="11" y="1" width="1.12" height="1.12"/><rect x="0" y="2" width="1.12" height="1.12"/><rect x="1" y="2" width="1.12" height="1.12"/><rect x="2" y="2" width="1.12" height="1.12"/><rect x="3" y="2" width="1.12" height="1.12"/><rect x="4" y="2" width="1.12" height="1.12"/><rect x="5" y="2" width="1.12" height="1.12"/><rect x="6" y="2" width="1.12" height="1.12"/><rect x="7" y="2" width="1.12" height="1.12"/><rect x="8" y="2" width="1.12" height="1.12"/><rect x="9" y="2" width="1.12" height="1.12"/><rect x="10" y="2" width="1.12" height="1.12"/><rect x="11" y="2" width="1.12" height="1.12"/><rect x="12" y="2" width="1.12" height="1.12"/><rect x="0" y="3" width="1.12" height="1.12"/><rect x="1" y="3" width="1.12" height="1.12"/><rect x="2" y="3" width="1.12" height="1.12"/><rect x="3" y="3" width="1.12" height="1.12"/><rect x="4" y="3" width="1.12" height="1.12"/><rect x="5" y="3" width="1.12" height="1.12"/><rect x="6" y="3" width="1.12" height="1.12"/><rect x="7" y="3" width="1.12" height="1.12"/><rect x="8" y="3" width="1.12" height="1.12"/><rect x="9" y="3" width="1.12" height="1.12"/><rect x="10" y="3" width="1.12" height="1.12"/><rect x="11" y="3" width="1.12" height="1.12"/><rect x="12" y="3" width="1.12" height="1.12"/><rect x="0" y="4" width="1.12" height="1.12"/><rect x="1" y="4" width="1.12" height="1.12"/><rect x="2" y="4" width="1.12" height="1.12"/><rect x="3" y="4" width="1.12" height="1.12"/><rect x="4" y="4" width="1.12" height="1.12"/><rect x="5" y="4" width="1.12" height="1.12"/><rect x="6" y="4" width="1.12" height="1.12"/><rect x="7" y="4" width="1.12" height="1.12"/><rect x="8" y="4" width="1.12" height="1.12"/><rect x="9" y="4" width="1.12" height="1.12"/><rect x="10" y="4" width="1.12" height="1.12"/><rect x="11" y="4" width="1.12" height="1.12"/><rect x="12" y="4" width="1.12" height="1.12"/><rect x="1" y="5" width="1.12" height="1.12"/><rect x="2" y="5" width="1.12" height="1.12"/><rect x="3" y="5" width="1.12" height="1.12"/><rect x="4" y="5" width="1.12" height="1.12"/><rect x="5" y="5" width="1.12" height="1.12"/><rect x="6" y="5" width="1.12" height="1.12"/><rect x="7" y="5" width="1.12" height="1.12"/><rect x="8" y="5" width="1.12" height="1.12"/><rect x="9" y="5" width="1.12" height="1.12"/><rect x="10" y="5" width="1.12" height="1.12"/><rect x="11" y="5" width="1.12" height="1.12"/><rect x="2" y="6" width="1.12" height="1.12"/><rect x="3" y="6" width="1.12" height="1.12"/><rect x="4" y="6" width="1.12" height="1.12"/><rect x="5" y="6" width="1.12" height="1.12"/><rect x="6" y="6" width="1.12" height="1.12"/><rect x="7" y="6" width="1.12" height="1.12"/><rect x="8" y="6" width="1.12" height="1.12"/><rect x="9" y="6" width="1.12" height="1.12"/><rect x="10" y="6" width="1.12" height="1.12"/><rect x="3" y="7" width="1.12" height="1.12"/><rect x="4" y="7" width="1.12" height="1.12"/><rect x="5" y="7" width="1.12" height="1.12"/><rect x="6" y="7" width="1.12" height="1.12"/><rect x="7" y="7" width="1.12" height="1.12"/><rect x="8" y="7" width="1.12" height="1.12"/><rect x="9" y="7" width="1.12" height="1.12"/><rect x="4" y="8" width="1.12" height="1.12"/><rect x="5" y="8" width="1.12" height="1.12"/><rect x="6" y="8" width="1.12" height="1.12"/><rect x="7" y="8" width="1.12" height="1.12"/><rect x="8" y="8" width="1.12" height="1.12"/><rect x="5" y="9" width="1.12" height="1.12"/><rect x="6" y="9" width="1.12" height="1.12"/><rect x="7" y="9" width="1.12" height="1.12"/><rect x="6" y="10" width="1.12" height="1.12"/></g></svg>
+  <svg class="hstar" viewBox="0 0 120 120" aria-hidden="true"><g fill="#F07AAA"><circle cx="54.0" cy="8.9" r="0.41"/><circle cx="58.0" cy="8.9" r="0.56"/><circle cx="62.0" cy="8.9" r="0.56"/><circle cx="66.0" cy="8.9" r="0.41"/><circle cx="52.0" cy="12.4" r="0.58"/><circle cx="56.0" cy="12.4" r="0.83"/><circle cx="60.0" cy="12.4" r="0.93"/><circle cx="64.0" cy="12.4" r="0.83"/><circle cx="68.0" cy="12.4" r="0.58"/><circle cx="50.0" cy="15.9" r="0.61"/><circle cx="54.0" cy="15.9" r="0.96"/><circle cx="58.0" cy="15.9" r="1.22"/><circle cx="62.0" cy="15.9" r="1.22"/><circle cx="66.0" cy="15.9" r="0.96"/><circle cx="70.0" cy="15.9" r="0.61"/><circle cx="48.0" cy="19.3" r="0.59"/><circle cx="52.0" cy="19.3" r="0.95"/><circle cx="56.0" cy="19.3" r="1.30"/><circle cx="60.0" cy="19.3" r="1.60"/><circle cx="64.0" cy="19.3" r="1.30"/><circle cx="68.0" cy="19.3" r="0.95"/><circle cx="72.0" cy="19.3" r="0.59"/><circle cx="46.0" cy="22.8" r="0.58"/><circle cx="50.0" cy="22.8" r="0.94"/><circle cx="54.0" cy="22.8" r="1.28"/><circle cx="58.0" cy="22.8" r="1.62"/><circle cx="62.0" cy="22.8" r="1.62"/><circle cx="66.0" cy="22.8" r="1.28"/><circle cx="70.0" cy="22.8" r="0.94"/><circle cx="74.0" cy="22.8" r="0.58"/><circle cx="44.0" cy="26.2" r="0.57"/><circle cx="48.0" cy="26.2" r="0.93"/><circle cx="52.0" cy="26.2" r="1.27"/><circle cx="56.0" cy="26.2" r="1.61"/><circle cx="60.0" cy="26.2" r="1.93"/><circle cx="64.0" cy="26.2" r="1.61"/><circle cx="68.0" cy="26.2" r="1.27"/><circle cx="72.0" cy="26.2" r="0.93"/><circle cx="76.0" cy="26.2" r="0.57"/><circle cx="42.0" cy="29.7" r="0.55"/><circle cx="46.0" cy="29.7" r="0.91"/><circle cx="50.0" cy="29.7" r="1.26"/><circle cx="54.0" cy="29.7" r="1.59"/><circle cx="58.0" cy="29.7" r="1.92"/><circle cx="62.0" cy="29.7" r="1.92"/><circle cx="66.0" cy="29.7" r="1.59"/><circle cx="70.0" cy="29.7" r="1.26"/><circle cx="74.0" cy="29.7" r="0.91"/><circle cx="78.0" cy="29.7" r="0.55"/><circle cx="28.0" cy="33.2" r="0.35"/><circle cx="32.0" cy="33.2" r="0.43"/><circle cx="36.0" cy="33.2" r="0.50"/><circle cx="40.0" cy="33.2" r="0.58"/><circle cx="44.0" cy="33.2" r="0.90"/><circle cx="48.0" cy="33.2" r="1.25"/><circle cx="52.0" cy="33.2" r="1.58"/><circle cx="56.0" cy="33.2" r="1.91"/><circle cx="60.0" cy="33.2" r="2.23"/><circle cx="64.0" cy="33.2" r="1.91"/><circle cx="68.0" cy="33.2" r="1.58"/><circle cx="72.0" cy="33.2" r="1.25"/><circle cx="76.0" cy="33.2" r="0.90"/><circle cx="80.0" cy="33.2" r="0.58"/><circle cx="84.0" cy="33.2" r="0.50"/><circle cx="88.0" cy="33.2" r="0.43"/><circle cx="92.0" cy="33.2" r="0.35"/><circle cx="14.0" cy="36.6" r="0.30"/><circle cx="18.0" cy="36.6" r="0.51"/><circle cx="22.0" cy="36.6" r="0.60"/><circle cx="26.0" cy="36.6" r="0.68"/><circle cx="30.0" cy="36.6" r="0.75"/><circle cx="34.0" cy="36.6" r="0.82"/><circle cx="38.0" cy="36.6" r="0.89"/><circle cx="42.0" cy="36.6" r="0.96"/><circle cx="46.0" cy="36.6" r="1.24"/><circle cx="50.0" cy="36.6" r="1.57"/><circle cx="54.0" cy="36.6" r="1.90"/><circle cx="58.0" cy="36.6" r="2.22"/><circle cx="62.0" cy="36.6" r="2.22"/><circle cx="66.0" cy="36.6" r="1.90"/><circle cx="70.0" cy="36.6" r="1.57"/><circle cx="74.0" cy="36.6" r="1.24"/><circle cx="78.0" cy="36.6" r="0.96"/><circle cx="82.0" cy="36.6" r="0.89"/><circle cx="86.0" cy="36.6" r="0.82"/><circle cx="90.0" cy="36.6" r="0.75"/><circle cx="94.0" cy="36.6" r="0.68"/><circle cx="98.0" cy="36.6" r="0.60"/><circle cx="102.0" cy="36.6" r="0.51"/><circle cx="106.0" cy="36.6" r="0.30"/><circle cx="12.0" cy="40.1" r="0.42"/><circle cx="16.0" cy="40.1" r="0.73"/><circle cx="20.0" cy="40.1" r="0.91"/><circle cx="24.0" cy="40.1" r="0.98"/><circle cx="28.0" cy="40.1" r="1.05"/><circle cx="32.0" cy="40.1" r="1.12"/><circle cx="36.0" cy="40.1" r="1.19"/><circle cx="40.0" cy="40.1" r="1.26"/><circle cx="44.0" cy="40.1" r="1.33"/><circle cx="48.0" cy="40.1" r="1.56"/><circle cx="52.0" cy="40.1" r="1.89"/><circle cx="56.0" cy="40.1" r="2.21"/><circle cx="60.0" cy="40.1" r="2.48"/><circle cx="64.0" cy="40.1" r="2.21"/><circle cx="68.0" cy="40.1" r="1.89"/><circle cx="72.0" cy="40.1" r="1.56"/><circle cx="76.0" cy="40.1" r="1.33"/><circle cx="80.0" cy="40.1" r="1.26"/><circle cx="84.0" cy="40.1" r="1.19"/><circle cx="88.0" cy="40.1" r="1.12"/><circle cx="92.0" cy="40.1" r="1.05"/><circle cx="96.0" cy="40.1" r="0.98"/><circle cx="100.0" cy="40.1" r="0.91"/><circle cx="104.0" cy="40.1" r="0.73"/><circle cx="108.0" cy="40.1" r="0.42"/><circle cx="10.0" cy="43.6" r="0.41"/><circle cx="14.0" cy="43.6" r="0.79"/><circle cx="18.0" cy="43.6" r="1.12"/><circle cx="22.0" cy="43.6" r="1.28"/><circle cx="26.0" cy="43.6" r="1.35"/><circle cx="30.0" cy="43.6" r="1.42"/><circle cx="34.0" cy="43.6" r="1.48"/><circle cx="38.0" cy="43.6" r="1.55"/><circle cx="42.0" cy="43.6" r="1.62"/><circle cx="46.0" cy="43.6" r="1.68"/><circle cx="50.0" cy="43.6" r="1.88"/><circle cx="54.0" cy="43.6" r="2.20"/><circle cx="58.0" cy="43.6" r="2.48"/><circle cx="62.0" cy="43.6" r="2.48"/><circle cx="66.0" cy="43.6" r="2.20"/><circle cx="70.0" cy="43.6" r="1.88"/><circle cx="74.0" cy="43.6" r="1.68"/><circle cx="78.0" cy="43.6" r="1.62"/><circle cx="82.0" cy="43.6" r="1.55"/><circle cx="86.0" cy="43.6" r="1.48"/><circle cx="90.0" cy="43.6" r="1.42"/><circle cx="94.0" cy="43.6" r="1.35"/><circle cx="98.0" cy="43.6" r="1.28"/><circle cx="102.0" cy="43.6" r="1.12"/><circle cx="106.0" cy="43.6" r="0.79"/><circle cx="110.0" cy="43.6" r="0.41"/><circle cx="12.0" cy="47.0" r="0.69"/><circle cx="16.0" cy="47.0" r="1.09"/><circle cx="20.0" cy="47.0" r="1.47"/><circle cx="24.0" cy="47.0" r="1.64"/><circle cx="28.0" cy="47.0" r="1.70"/><circle cx="32.0" cy="47.0" r="1.77"/><circle cx="36.0" cy="47.0" r="1.84"/><circle cx="40.0" cy="47.0" r="1.90"/><circle cx="44.0" cy="47.0" r="1.97"/><circle cx="48.0" cy="47.0" r="2.03"/><circle cx="52.0" cy="47.0" r="2.20"/><circle cx="56.0" cy="47.0" r="2.48"/><circle cx="60.0" cy="47.0" r="2.48"/><circle cx="64.0" cy="47.0" r="2.48"/><circle cx="68.0" cy="47.0" r="2.20"/><circle cx="72.0" cy="47.0" r="2.03"/><circle cx="76.0" cy="47.0" r="1.97"/><circle cx="80.0" cy="47.0" r="1.90"/><circle cx="84.0" cy="47.0" r="1.84"/><circle cx="88.0" cy="47.0" r="1.77"/><circle cx="92.0" cy="47.0" r="1.70"/><circle cx="96.0" cy="47.0" r="1.64"/><circle cx="100.0" cy="47.0" r="1.47"/><circle cx="104.0" cy="47.0" r="1.09"/><circle cx="108.0" cy="47.0" r="0.69"/><circle cx="10.0" cy="50.5" r="0.44"/><circle cx="14.0" cy="50.5" r="0.84"/><circle cx="18.0" cy="50.5" r="1.20"/><circle cx="22.0" cy="50.5" r="1.48"/><circle cx="26.0" cy="50.5" r="1.75"/><circle cx="30.0" cy="50.5" r="2.01"/><circle cx="34.0" cy="50.5" r="2.11"/><circle cx="38.0" cy="50.5" r="2.18"/><circle cx="42.0" cy="50.5" r="2.24"/><circle cx="46.0" cy="50.5" r="2.31"/><circle cx="50.0" cy="50.5" r="2.38"/><circle cx="54.0" cy="50.5" r="2.48"/><circle cx="58.0" cy="50.5" r="2.48"/><circle cx="62.0" cy="50.5" r="2.48"/><circle cx="66.0" cy="50.5" r="2.48"/><circle cx="70.0" cy="50.5" r="2.38"/><circle cx="74.0" cy="50.5" r="2.31"/><circle cx="78.0" cy="50.5" r="2.24"/><circle cx="82.0" cy="50.5" r="2.18"/><circle cx="86.0" cy="50.5" r="2.11"/><circle cx="90.0" cy="50.5" r="2.01"/><circle cx="94.0" cy="50.5" r="1.75"/><circle cx="98.0" cy="50.5" r="1.48"/><circle cx="102.0" cy="50.5" r="1.20"/><circle cx="106.0" cy="50.5" r="0.84"/><circle cx="110.0" cy="50.5" r="0.44"/><circle cx="12.0" cy="54.0" r="0.50"/><circle cx="16.0" cy="54.0" r="0.82"/><circle cx="20.0" cy="54.0" r="1.11"/><circle cx="24.0" cy="54.0" r="1.39"/><circle cx="28.0" cy="54.0" r="1.66"/><circle cx="32.0" cy="54.0" r="1.93"/><circle cx="36.0" cy="54.0" r="2.19"/><circle cx="40.0" cy="54.0" r="2.45"/><circle cx="44.0" cy="54.0" r="2.48"/><circle cx="48.0" cy="54.0" r="2.48"/><circle cx="52.0" cy="54.0" r="2.48"/><circle cx="56.0" cy="54.0" r="2.48"/><circle cx="60.0" cy="54.0" r="2.48"/><circle cx="64.0" cy="54.0" r="2.48"/><circle cx="68.0" cy="54.0" r="2.48"/><circle cx="72.0" cy="54.0" r="2.48"/><circle cx="76.0" cy="54.0" r="2.48"/><circle cx="80.0" cy="54.0" r="2.45"/><circle cx="84.0" cy="54.0" r="2.19"/><circle cx="88.0" cy="54.0" r="1.93"/><circle cx="92.0" cy="54.0" r="1.66"/><circle cx="96.0" cy="54.0" r="1.39"/><circle cx="100.0" cy="54.0" r="1.11"/><circle cx="104.0" cy="54.0" r="0.82"/><circle cx="108.0" cy="54.0" r="0.50"/><circle cx="14.0" cy="57.4" r="0.42"/><circle cx="18.0" cy="57.4" r="0.72"/><circle cx="22.0" cy="57.4" r="1.01"/><circle cx="26.0" cy="57.4" r="1.30"/><circle cx="30.0" cy="57.4" r="1.57"/><circle cx="34.0" cy="57.4" r="1.84"/><circle cx="38.0" cy="57.4" r="2.10"/><circle cx="42.0" cy="57.4" r="2.36"/><circle cx="46.0" cy="57.4" r="2.48"/><circle cx="50.0" cy="57.4" r="2.48"/><circle cx="54.0" cy="57.4" r="2.48"/><circle cx="58.0" cy="57.4" r="2.48"/><circle cx="62.0" cy="57.4" r="2.48"/><circle cx="66.0" cy="57.4" r="2.48"/><circle cx="70.0" cy="57.4" r="2.48"/><circle cx="74.0" cy="57.4" r="2.48"/><circle cx="78.0" cy="57.4" r="2.36"/><circle cx="82.0" cy="57.4" r="2.10"/><circle cx="86.0" cy="57.4" r="1.84"/><circle cx="90.0" cy="57.4" r="1.57"/><circle cx="94.0" cy="57.4" r="1.30"/><circle cx="98.0" cy="57.4" r="1.01"/><circle cx="102.0" cy="57.4" r="0.72"/><circle cx="106.0" cy="57.4" r="0.42"/><circle cx="16.0" cy="60.9" r="0.32"/><circle cx="20.0" cy="60.9" r="0.63"/><circle cx="24.0" cy="60.9" r="0.92"/><circle cx="28.0" cy="60.9" r="1.20"/><circle cx="32.0" cy="60.9" r="1.48"/><circle cx="36.0" cy="60.9" r="1.75"/><circle cx="40.0" cy="60.9" r="2.02"/><circle cx="44.0" cy="60.9" r="2.28"/><circle cx="48.0" cy="60.9" r="2.48"/><circle cx="52.0" cy="60.9" r="2.48"/><circle cx="56.0" cy="60.9" r="2.48"/><circle cx="60.0" cy="60.9" r="2.48"/><circle cx="64.0" cy="60.9" r="2.48"/><circle cx="68.0" cy="60.9" r="2.48"/><circle cx="72.0" cy="60.9" r="2.48"/><circle cx="76.0" cy="60.9" r="2.28"/><circle cx="80.0" cy="60.9" r="2.02"/><circle cx="84.0" cy="60.9" r="1.75"/><circle cx="88.0" cy="60.9" r="1.48"/><circle cx="92.0" cy="60.9" r="1.20"/><circle cx="96.0" cy="60.9" r="0.92"/><circle cx="100.0" cy="60.9" r="0.63"/><circle cx="104.0" cy="60.9" r="0.32"/><circle cx="22.0" cy="64.4" r="0.53"/><circle cx="26.0" cy="64.4" r="0.82"/><circle cx="30.0" cy="64.4" r="1.11"/><circle cx="34.0" cy="64.4" r="1.39"/><circle cx="38.0" cy="64.4" r="1.66"/><circle cx="42.0" cy="64.4" r="1.93"/><circle cx="46.0" cy="64.4" r="2.24"/><circle cx="50.0" cy="64.4" r="2.48"/><circle cx="54.0" cy="64.4" r="2.48"/><circle cx="58.0" cy="64.4" r="2.48"/><circle cx="62.0" cy="64.4" r="2.48"/><circle cx="66.0" cy="64.4" r="2.48"/><circle cx="70.0" cy="64.4" r="2.48"/><circle cx="74.0" cy="64.4" r="2.24"/><circle cx="78.0" cy="64.4" r="1.93"/><circle cx="82.0" cy="64.4" r="1.66"/><circle cx="86.0" cy="64.4" r="1.39"/><circle cx="90.0" cy="64.4" r="1.11"/><circle cx="94.0" cy="64.4" r="0.82"/><circle cx="98.0" cy="64.4" r="0.53"/><circle cx="24.0" cy="67.8" r="0.42"/><circle cx="28.0" cy="67.8" r="0.73"/><circle cx="32.0" cy="67.8" r="1.02"/><circle cx="36.0" cy="67.8" r="1.30"/><circle cx="40.0" cy="67.8" r="1.67"/><circle cx="44.0" cy="67.8" r="2.04"/><circle cx="48.0" cy="67.8" r="2.40"/><circle cx="52.0" cy="67.8" r="2.48"/><circle cx="56.0" cy="67.8" r="2.48"/><circle cx="60.0" cy="67.8" r="2.48"/><circle cx="64.0" cy="67.8" r="2.48"/><circle cx="68.0" cy="67.8" r="2.48"/><circle cx="72.0" cy="67.8" r="2.40"/><circle cx="76.0" cy="67.8" r="2.04"/><circle cx="80.0" cy="67.8" r="1.67"/><circle cx="84.0" cy="67.8" r="1.30"/><circle cx="88.0" cy="67.8" r="1.02"/><circle cx="92.0" cy="67.8" r="0.73"/><circle cx="96.0" cy="67.8" r="0.42"/><circle cx="26.0" cy="71.3" r="0.34"/><circle cx="30.0" cy="71.3" r="0.76"/><circle cx="34.0" cy="71.3" r="1.15"/><circle cx="38.0" cy="71.3" r="1.53"/><circle cx="42.0" cy="71.3" r="1.90"/><circle cx="46.0" cy="71.3" r="2.26"/><circle cx="50.0" cy="71.3" r="2.48"/><circle cx="54.0" cy="71.3" r="2.48"/><circle cx="58.0" cy="71.3" r="2.48"/><circle cx="62.0" cy="71.3" r="2.48"/><circle cx="66.0" cy="71.3" r="2.48"/><circle cx="70.0" cy="71.3" r="2.48"/><circle cx="74.0" cy="71.3" r="2.26"/><circle cx="78.0" cy="71.3" r="1.90"/><circle cx="82.0" cy="71.3" r="1.53"/><circle cx="86.0" cy="71.3" r="1.15"/><circle cx="90.0" cy="71.3" r="0.76"/><circle cx="94.0" cy="71.3" r="0.34"/><circle cx="28.0" cy="74.7" r="0.60"/><circle cx="32.0" cy="74.7" r="1.01"/><circle cx="36.0" cy="74.7" r="1.39"/><circle cx="40.0" cy="74.7" r="1.76"/><circle cx="44.0" cy="74.7" r="2.12"/><circle cx="48.0" cy="74.7" r="2.48"/><circle cx="52.0" cy="74.7" r="2.48"/><circle cx="56.0" cy="74.7" r="2.33"/><circle cx="60.0" cy="74.7" r="2.23"/><circle cx="64.0" cy="74.7" r="2.33"/><circle cx="68.0" cy="74.7" r="2.48"/><circle cx="72.0" cy="74.7" r="2.48"/><circle cx="76.0" cy="74.7" r="2.12"/><circle cx="80.0" cy="74.7" r="1.76"/><circle cx="84.0" cy="74.7" r="1.39"/><circle cx="88.0" cy="74.7" r="1.01"/><circle cx="92.0" cy="74.7" r="0.60"/><circle cx="26.0" cy="78.2" r="0.44"/><circle cx="30.0" cy="78.2" r="0.85"/><circle cx="34.0" cy="78.2" r="1.24"/><circle cx="38.0" cy="78.2" r="1.62"/><circle cx="42.0" cy="78.2" r="1.99"/><circle cx="46.0" cy="78.2" r="2.35"/><circle cx="50.0" cy="78.2" r="2.29"/><circle cx="54.0" cy="78.2" r="2.13"/><circle cx="58.0" cy="78.2" r="1.97"/><circle cx="62.0" cy="78.2" r="1.97"/><circle cx="66.0" cy="78.2" r="2.13"/><circle cx="70.0" cy="78.2" r="2.29"/><circle cx="74.0" cy="78.2" r="2.35"/><circle cx="78.0" cy="78.2" r="1.99"/><circle cx="82.0" cy="78.2" r="1.62"/><circle cx="86.0" cy="78.2" r="1.24"/><circle cx="90.0" cy="78.2" r="0.85"/><circle cx="94.0" cy="78.2" r="0.44"/><circle cx="28.0" cy="81.7" r="0.70"/><circle cx="32.0" cy="81.7" r="1.10"/><circle cx="36.0" cy="81.7" r="1.48"/><circle cx="40.0" cy="81.7" r="1.85"/><circle cx="44.0" cy="81.7" r="2.21"/><circle cx="48.0" cy="81.7" r="2.08"/><circle cx="52.0" cy="81.7" r="1.93"/><circle cx="56.0" cy="81.7" r="1.77"/><circle cx="60.0" cy="81.7" r="1.60"/><circle cx="64.0" cy="81.7" r="1.77"/><circle cx="68.0" cy="81.7" r="1.93"/><circle cx="72.0" cy="81.7" r="2.08"/><circle cx="76.0" cy="81.7" r="2.21"/><circle cx="80.0" cy="81.7" r="1.85"/><circle cx="84.0" cy="81.7" r="1.48"/><circle cx="88.0" cy="81.7" r="1.10"/><circle cx="92.0" cy="81.7" r="0.70"/><circle cx="26.0" cy="85.1" r="0.54"/><circle cx="30.0" cy="85.1" r="0.95"/><circle cx="34.0" cy="85.1" r="1.33"/><circle cx="38.0" cy="85.1" r="1.71"/><circle cx="42.0" cy="85.1" r="2.04"/><circle cx="46.0" cy="85.1" r="1.88"/><circle cx="50.0" cy="85.1" r="1.72"/><circle cx="54.0" cy="85.1" r="1.56"/><circle cx="58.0" cy="85.1" r="1.39"/><circle cx="62.0" cy="85.1" r="1.39"/><circle cx="66.0" cy="85.1" r="1.56"/><circle cx="70.0" cy="85.1" r="1.72"/><circle cx="74.0" cy="85.1" r="1.88"/><circle cx="78.0" cy="85.1" r="2.04"/><circle cx="82.0" cy="85.1" r="1.71"/><circle cx="86.0" cy="85.1" r="1.33"/><circle cx="90.0" cy="85.1" r="0.95"/><circle cx="94.0" cy="85.1" r="0.54"/><circle cx="24.0" cy="88.6" r="0.38"/><circle cx="28.0" cy="88.6" r="0.80"/><circle cx="32.0" cy="88.6" r="1.19"/><circle cx="36.0" cy="88.6" r="1.57"/><circle cx="40.0" cy="88.6" r="1.83"/><circle cx="44.0" cy="88.6" r="1.67"/><circle cx="48.0" cy="88.6" r="1.51"/><circle cx="52.0" cy="88.6" r="1.34"/><circle cx="56.0" cy="88.6" r="1.17"/><circle cx="60.0" cy="88.6" r="1.00"/><circle cx="64.0" cy="88.6" r="1.17"/><circle cx="68.0" cy="88.6" r="1.34"/><circle cx="72.0" cy="88.6" r="1.51"/><circle cx="76.0" cy="88.6" r="1.67"/><circle cx="80.0" cy="88.6" r="1.83"/><circle cx="84.0" cy="88.6" r="1.57"/><circle cx="88.0" cy="88.6" r="1.19"/><circle cx="92.0" cy="88.6" r="0.80"/><circle cx="96.0" cy="88.6" r="0.38"/><circle cx="26.0" cy="92.1" r="0.64"/><circle cx="30.0" cy="92.1" r="1.04"/><circle cx="34.0" cy="92.1" r="1.42"/><circle cx="38.0" cy="92.1" r="1.62"/><circle cx="42.0" cy="92.1" r="1.46"/><circle cx="46.0" cy="92.1" r="1.29"/><circle cx="50.0" cy="92.1" r="1.13"/><circle cx="54.0" cy="92.1" r="0.95"/><circle cx="58.0" cy="92.1" r="0.78"/><circle cx="62.0" cy="92.1" r="0.78"/><circle cx="66.0" cy="92.1" r="0.95"/><circle cx="70.0" cy="92.1" r="1.13"/><circle cx="74.0" cy="92.1" r="1.29"/><circle cx="78.0" cy="92.1" r="1.46"/><circle cx="82.0" cy="92.1" r="1.62"/><circle cx="86.0" cy="92.1" r="1.42"/><circle cx="90.0" cy="92.1" r="1.04"/><circle cx="94.0" cy="92.1" r="0.64"/><circle cx="24.0" cy="95.5" r="0.38"/><circle cx="28.0" cy="95.5" r="0.78"/><circle cx="32.0" cy="95.5" r="1.14"/><circle cx="36.0" cy="95.5" r="1.36"/><circle cx="40.0" cy="95.5" r="1.24"/><circle cx="44.0" cy="95.5" r="1.08"/><circle cx="48.0" cy="95.5" r="0.90"/><circle cx="52.0" cy="95.5" r="0.73"/><circle cx="56.0" cy="95.5" r="0.55"/><circle cx="60.0" cy="95.5" r="0.36"/><circle cx="64.0" cy="95.5" r="0.55"/><circle cx="68.0" cy="95.5" r="0.73"/><circle cx="72.0" cy="95.5" r="0.90"/><circle cx="76.0" cy="95.5" r="1.08"/><circle cx="80.0" cy="95.5" r="1.24"/><circle cx="84.0" cy="95.5" r="1.36"/><circle cx="88.0" cy="95.5" r="1.14"/><circle cx="92.0" cy="95.5" r="0.78"/><circle cx="96.0" cy="95.5" r="0.38"/><circle cx="26.0" cy="99.0" r="0.43"/><circle cx="30.0" cy="99.0" r="0.76"/><circle cx="34.0" cy="99.0" r="0.98"/><circle cx="38.0" cy="99.0" r="1.01"/><circle cx="42.0" cy="99.0" r="0.85"/><circle cx="46.0" cy="99.0" r="0.68"/><circle cx="50.0" cy="99.0" r="0.49"/><circle cx="54.0" cy="99.0" r="0.30"/><circle cx="66.0" cy="99.0" r="0.30"/><circle cx="70.0" cy="99.0" r="0.49"/><circle cx="74.0" cy="99.0" r="0.68"/><circle cx="78.0" cy="99.0" r="0.85"/><circle cx="82.0" cy="99.0" r="1.01"/><circle cx="86.0" cy="99.0" r="0.98"/><circle cx="90.0" cy="99.0" r="0.76"/><circle cx="94.0" cy="99.0" r="0.43"/><circle cx="28.0" cy="102.5" r="0.35"/><circle cx="32.0" cy="102.5" r="0.58"/><circle cx="36.0" cy="102.5" r="0.68"/><circle cx="40.0" cy="102.5" r="0.62"/><circle cx="44.0" cy="102.5" r="0.44"/><circle cx="76.0" cy="102.5" r="0.44"/><circle cx="80.0" cy="102.5" r="0.62"/><circle cx="84.0" cy="102.5" r="0.68"/><circle cx="88.0" cy="102.5" r="0.58"/><circle cx="92.0" cy="102.5" r="0.35"/><circle cx="38.0" cy="105.9" r="0.30"/><circle cx="82.0" cy="105.9" r="0.30"/></g></svg>
+  <svg class="ph spk" viewBox="0 0 7 7" aria-hidden="true"><g fill="#F28DB5"><circle cx="3.5" cy="0.5" r="0.36"/><circle cx="3.5" cy="1.5" r="0.36"/><circle cx="2.5" cy="2.5" r="0.36"/><circle cx="3.5" cy="2.5" r="0.36"/><circle cx="4.5" cy="2.5" r="0.36"/><circle cx="0.5" cy="3.5" r="0.36"/><circle cx="1.5" cy="3.5" r="0.36"/><circle cx="2.5" cy="3.5" r="0.36"/><circle cx="3.5" cy="3.5" r="0.36"/><circle cx="4.5" cy="3.5" r="0.36"/><circle cx="5.5" cy="3.5" r="0.36"/><circle cx="6.5" cy="3.5" r="0.36"/><circle cx="2.5" cy="4.5" r="0.36"/><circle cx="3.5" cy="4.5" r="0.36"/><circle cx="4.5" cy="4.5" r="0.36"/><circle cx="3.5" cy="5.5" r="0.36"/><circle cx="3.5" cy="6.5" r="0.36"/></g></svg>
+  <span class="s s1">★</span><span class="s s2">★</span><span class="s s3">★</span>
+
   <div class="top">
-    <b id="mon"></b>
-    <button class="arrow" id="py" aria-label="previous year">‹</button>
-    <b id="yr"></b>
-    <button class="arrow" id="ny" aria-label="next year">›</button>
+    <div class="mon" id="mon"><i>O</i>ctober</div>
   </div>
-  <div class="bar">
+
+  <div class="ctl">
     <div class="nav">
-      <button id="prev" class="a" aria-label="previous">‹</button>
-      <button id="today">Today</button>
-      <button id="next" class="a" aria-label="next">›</button>
+      <button class="a" id="py" aria-label="previous year">‹</button><span class="yr" id="yr">2026</span><button class="a" id="ny" aria-label="next year">›</button>
+      <span class="gap"></span>
+      <button class="a" id="prev" aria-label="previous">‹</button>
+      <button id="today">TODAY</button>
+      <button class="a" id="next" aria-label="next">›</button>
     </div>
     <div class="seg" id="seg">
-      <button data-v="M" class="on">M</button>
-      <button data-v="W">W</button>
-      <button data-v="D">D</button>
-      <button data-v="A">A</button>
+      <button data-v="M" class="on">M</button><button data-v="W">W</button><button data-v="D">D</button><button data-v="A">A</button>
     </div>
   </div>
-  <div id="body"></div>
+
+  <div class="panel"><div id="body"><div class="grid"><div class="h">MON</div><div class="h">TUE</div><div class="h">WED</div><div class="h">THU</div><div class="h">FRI</div><div class="h">SAT</div><div class="h">SUN</div><div class="d o"><span class="num">28</span></div><div class="d o"><span class="num">29</span></div><div class="d o"><span class="num">30</span></div><div class="d"><span class="num">01</span></div><div class="d"><span class="num">02</span></div><div class="d"><span class="num">03</span></div><div class="d"><span class="num">04</span></div><div class="d"><span class="num">05</span></div><div class="d"><span class="num">06</span></div><div class="d"><span class="num">07</span></div><div class="d"><span class="num">08</span></div><div class="d"><span class="num">09</span></div><div class="d"><span class="num">10</span></div><div class="d"><span class="num">11</span></div><div class="d"><span class="num">12</span></div><div class="d"><span class="num t">13</span></div><div class="d"><span class="num">14</span></div><div class="d"><span class="num">15</span></div><div class="d"><span class="num">16</span></div><div class="d"><span class="num">17</span></div><div class="d"><span class="num">18</span></div><div class="d"><span class="num">19</span></div><div class="d"><span class="num">20</span></div><div class="d"><span class="num">21</span></div><div class="d"><span class="num">22</span></div><div class="d"><span class="num">23</span></div><div class="d"><span class="num">24</span></div><div class="d"><span class="num">25</span></div><div class="d"><span class="num">26</span></div><div class="d"><span class="num">27</span></div><div class="d"><span class="num">28</span></div><div class="d"><span class="num">29</span></div><div class="d"><span class="num">30</span></div><div class="d"><span class="num">31</span></div><div class="d o"><span class="num">01</span></div></div></div></div>
+  <div class="grain"></div>
 </div>
 <script>
 const MN=["January","February","March","April","May","June","July","August","September","October","November","December"];
-const WD=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const WD=["MON","TUE","WED","THU","FRI","SAT","SUN"];
+const DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const DL=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let now=new Date(); now.setHours(0,0,0,0);
 let cur=new Date(now), view="M";
 const p=n=>String(n).padStart(2,"0");
 const same=(a,b)=>a.getTime()===b.getTime();
-
+/* Weekly scrim schedule (0=Sun ... 6=Sat): [start time, maps] */
+const WEEKLY={1:["21:00",2],2:["20:00",3],6:["20:00",3],0:["20:00",3]};
 function cell(d,out){
-  const e=document.createElement("div");
-  e.className="d"+(out?" o":"");
+  const e=document.createElement("div");e.className="d"+(out?" o":"");
   const n=document.createElement("span");n.className="num"+(same(d,now)?" t":"");n.textContent=p(d.getDate());
-  e.appendChild(n);
-  return e;
+  e.appendChild(n);return e;
 }
 function head(g){WD.forEach(w=>{const h=document.createElement("div");h.className="h";h.textContent=w;g.appendChild(h)})}
 function mondayOf(d){const x=new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
-
 function draw(){
-  document.getElementById("mon").textContent=MN[cur.getMonth()];
+  const mn=MN[cur.getMonth()];document.getElementById("mon").innerHTML="<i>"+mn[0]+"</i>"+mn.slice(1);fitInitial();
   document.getElementById("yr").textContent=cur.getFullYear();
-  const b=document.getElementById("body"); b.innerHTML="";
+  const b=document.getElementById("body");b.innerHTML="";
   if(view==="M"||view==="W"){
     const g=document.createElement("div");g.className="grid";head(g);
     let start,count;
     if(view==="M"){
-      const first=new Date(cur.getFullYear(),cur.getMonth(),1);
-      start=mondayOf(first);
+      const first=new Date(cur.getFullYear(),cur.getMonth(),1);start=mondayOf(first);
       const last=new Date(cur.getFullYear(),cur.getMonth()+1,0);
       const end=new Date(last);end.setDate(end.getDate()+(6-((last.getDay()+6)%7)));
       count=Math.round((end-start)/864e5)+1;
     }else{start=mondayOf(cur);count=7}
-    for(let i=0;i<count;i++){
-      const d=new Date(start);d.setDate(start.getDate()+i);
-      g.appendChild(cell(d,view==="M"&&d.getMonth()!==cur.getMonth()));
-    }
+    for(let i=0;i<count;i++){const d=new Date(start);d.setDate(start.getDate()+i);
+      g.appendChild(cell(d,view==="M"&&d.getMonth()!==cur.getMonth()))}
     b.appendChild(g);
   }else if(view==="D"){
-    b.innerHTML='<div class="big"><div class="n">'+p(cur.getDate())+'</div><div class="s">'+
-      ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][cur.getDay()]+", "+MN[cur.getMonth()]+" "+cur.getFullYear()+'</div></div>';
+    b.innerHTML='<div class="big2"><div class="n">'+p(cur.getDate())+'</div><div class="s0">'+DL[cur.getDay()]+'</div></div>';
   }else{
-    drawAgenda(b);
+    const s=WEEKLY[cur.getDay()];
+    b.innerHTML='<div class="list"><div class="dt">'+DN[cur.getDay()]+', '+MN[cur.getMonth()].slice(0,3)+' '+p(cur.getDate())+'</div><div class="ln"></div>'+
+      '<p>'+(s?'Scrim '+s[0]+' '+s[1]+' maps':'No schedule')+'</p></div>';
   }
 }
 
-/* Weekly scrim schedule (0=Sun ... 6=Sat): [start time, maps] */
-const WEEKLY={1:["21:00",2],2:["20:00",3],6:["20:00",3],0:["20:00",3]};
-const DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-function drawAgenda(b){
-  const d=cur, s=WEEKLY[d.getDay()];
-  let h='<div class="list"><p><b>'+DN[d.getDay()]+', '+MN[d.getMonth()].slice(0,3)+' '+p(d.getDate())+'</b></p>';
-  h+= s ? '<p>Scrim '+s[0]+' '+s[1]+' maps</p>' : '<p>No schedule</p>';
-  b.innerHTML=h+'</div>';
+/* close the gap between the script initial and the rest of the word, per letter */
+const _cv=document.createElement("canvas").getContext("2d");
+function fitInitial(){
+  const i=document.querySelector("#mon i");if(!i)return;
+  const cs=getComputedStyle(i);
+  _cv.font=cs.fontWeight+" "+cs.fontSize+" "+cs.fontFamily;
+  const m=_cv.measureText(i.textContent);
+  if(!m||m.actualBoundingBoxRight===undefined)return;
+  i.style.marginRight=(Math.min(0,m.actualBoundingBoxRight-m.width)-parseFloat(cs.fontSize)*0.06).toFixed(1)+"px";
 }
+function fitAgain(i){const cs=getComputedStyle(i);_cv.font=cs.fontWeight+" "+cs.fontSize+" "+cs.fontFamily;const m=_cv.measureText(i.textContent);i.style.marginRight=(Math.min(0,m.actualBoundingBoxRight-m.width)-parseFloat(cs.fontSize)*0.06).toFixed(1)+"px"}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fitInitial);document.fonts.load('66px "Great Vibes"').then(fitInitial).catch(()=>{})}
 function shift(dir){
   if(view==="M")cur=new Date(cur.getFullYear(),cur.getMonth()+dir,1);
   else{cur=new Date(cur);cur.setDate(cur.getDate()+dir*(view==="W"?7:1))}
@@ -126,11 +175,14 @@ document.getElementById("py").onclick=()=>{cur=new Date(cur.getFullYear()-1,cur.
 document.getElementById("ny").onclick=()=>{cur=new Date(cur.getFullYear()+1,cur.getMonth(),1);draw()};
 document.querySelectorAll("#seg button").forEach(btn=>btn.onclick=()=>{
   document.querySelectorAll("#seg button").forEach(x=>x.classList.remove("on"));
-  btn.classList.add("on");view=btn.dataset.v;if(view!=="M"&&cur.getMonth()===now.getMonth()&&cur.getFullYear()===now.getFullYear())cur=new Date(now);draw();
+  btn.classList.add("on");view=btn.dataset.v;
+  if(view!=="M"&&cur.getMonth()===now.getMonth()&&cur.getFullYear()===now.getFullYear())cur=new Date(now);
+  draw();
 });
+function refresh(){const t=new Date();t.setHours(0,0,0,0);if(!same(t,now)){now=t;draw()}}
+setInterval(refresh,60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
 draw();
-setInterval(()=>{const t=new Date();t.setHours(0,0,0,0);if(!same(t,now)){now=t;draw()}},60000);
-document.addEventListener("visibilitychange",()=>{if(!document.hidden){const t=new Date();t.setHours(0,0,0,0);if(!same(t,now)){now=t;draw()}}});
 </script>
 </body>
 </html>
